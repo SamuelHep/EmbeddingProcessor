@@ -14,18 +14,65 @@ class MiniMcReader : public TObject {
   TString tree_name_;
   TChain * tchain_;
   
-  std::vector<float> MakeEmptyFloatVector(int max_entries);
-  std::vector<int> MakeEmptyIntVector(int max_entries);
-
   void InitBranchVectors(int max_entries);
   TChain * InitChain( TString filelist, TString tree_name );
   void SetBranchStatus(TString branch_name, Int_t active);
   
-  std::map <TString, int> event_int_map_;
-  std::map <TString, float> event_float_map_;
-  std::map <TString, std::vector<int> > track_int_map_;
-  std::map <TString, std::vector<float> > track_float_map_;
   std::vector<TString> branch_names_;
+
+  //Event Variables
+  short mEventId;
+  short mRunId;
+  short mOriginMult;
+  short mCentralMult;
+  short mCentrality;
+  short mMcMult;
+  
+  double mVertexX;
+  double mVertexY;
+  double mVertexZ;
+  double mMcVertexX;
+  double mMcVertexY;
+  double mMcVertexZ;
+  double mMagField;
+
+  short mNMcTrack;
+  short mNMatchedPair;
+  short mNMergedPair;
+  short mNSplitPair;
+  short mNGhostPair;
+  short mNContamPair;
+  short mNMatGlobPair;
+
+  //Track Variables
+  std::vector<float> mMcPt;
+  std::vector<float> mMcPz;
+  std::vector<float> mMcEta;
+  std::vector<float> mMcPhi;
+  std::vector<float> mMcNHit;
+
+  std::vector<unsigned short> mMcGeantId;
+  std::vector<short> mMcCharge;
+  std::vector<unsigned short> mMcParentGeantId;
+
+  std::vector<float> mMatchedPt;
+  std::vector<float> mMatchedPz;
+  std::vector<float> mMatchedEta;
+  std::vector<float> mMatchedPhi;
+  std::vector<short> mMatchedNHit;
+  std::vector<short> mMatchedNPoss;
+
+  std::vector<unsigned short> mMatchedGeantId;
+  std::vector<short> mMatchedCharge;
+  std::vector<unsigned short> mMatchedParentGeantId;
+
+  std::vector<float> mMatchedPtPr;
+  std::vector<float> mMatchedPzPr;
+  std::vector<float> mMatchedEtaPr;
+  std::vector<float> mMatchedPhiPr;
+  std::vector<float> mMatchedDcaPr;
+  std::vector<float> mMatchedDcaXYPr;
+  std::vector<float> mMatchedDcaZPr;
   
  public:
 
@@ -36,57 +83,53 @@ class MiniMcReader : public TObject {
   int NEntries(){ return tchain_->GetEntries();}
   
   //Get Methods... How to reader the event
-  int GetEventId(){ return event_int_map_["mEventId"]; }
-  int GetRunId(){ return event_int_map_["mRunId"]; }
-  int GetOrigin(){ return event_int_map_["mOrigin"]; }
-  int GetCentralMult(){ return event_int_map_["mCentralMult"]; }
-  int GetCentrality(){ return event_int_map_["mCentrality"]; }
-  int GetMcMult(){ return event_int_map_["mMcMult"]; }
+  short GetEventId(){ return mEventId; }
+  short GetRunId(){ return mRunId; }
+  short GetOrigin(){ return mOriginMult; }
+  short GetCentralMult(){ return mCentralMult; }
+  short GetCentrality(){ return mCentrality; }
+  short GetMcMult(){ return mMcMult; }
   
-  float GetVertexX(){ return event_float_map_["mVertexX"]; }
-  float GetVertexY(){ return event_float_map_["mVertexY"]; }
-  float GetVertexZ(){ return event_float_map_["mVertexZ"]; }
+  float GetVertexX(){ return mVertexX; }
+  float GetVertexY(){ return mVertexY; }
+  float GetVertexZ(){ return mVertexZ; }
   
-  float GetMcVertexX(){ return event_float_map_["mMcVertexX"]; }
-  float GetMcVertexY(){ return event_float_map_["mMcVertexY"]; }
-  float GetMcVertexZ(){ return event_float_map_["mMcVertexZ"]; }
-  float GetMagField(){ return event_float_map_["mMagField"]; }
+  float GetMcVertexX(){ return mMcVertexX; }
+  float GetMcVertexY(){ return mMcVertexY; }
+  float GetMcVertexZ(){ return mMcVertexZ; }
+  float GetMagField(){ return mMagField; }
   
-  int GetNMcTrack(){ return event_int_map_["mNMcTrack"]; } 
-  int GetNMatchedPair(){ return event_int_map_["mNMatchedPair"]; }
+  short GetNMcTrack(){ return mNMcTrack; } 
+  short GetNMatchedPair(){ return mNMatchedPair; }
   
-  float GetMcPt(int iTrack){ return track_float_map_["mMcTracks.mPtMc"][iTrack];}
-  float GetMcPz(int iTrack){ return track_float_map_["mMcTracks.mPzMc"][iTrack];}
-  float GetMcEta(int iTrack){ return track_float_map_["mMcTracks.mEtaMc"][iTrack];}
-  float GetMcPhi(int iTrack){ return track_float_map_["mMcTracks.mPhiMc"][iTrack];}
-  
-  int GetMcNHit(int iTrack){ return track_int_map_["mMcTracks.mNHitMc"][iTrack];}  
-  int GetMcGeantId(int iTrack){ return track_int_map_["mMcTracks.mGeantId"][iTrack];}
-  int GetMcPdgId(int iTrack){ return track_int_map_["mMcTracks.mPdgId"][iTrack];}
-  int GetMcCharge(int iTrack){ return track_int_map_["mMcTracks.mChargeMc"][iTrack];}
-  int GetMcParentGeantId(int iTrack){ return track_int_map_["mMcTracks.mParentGeantId"][iTrack];}
-  int GetMcIsPrimary(int iTrack){ return track_int_map_["mMcTracks.mIsPrimary"][iTrack];}
-  
-  float GetMatchedMcPt(int iTrack){ return track_float_map_["mMatchedPairs.mPtMc"][iTrack];}
-  float GetMatchedMcPz(int iTrack){ return track_float_map_["mMatchedPairs.mPzMc"][iTrack];}
-  float GetMatchedMcEta(int iTrack){ return track_float_map_["mMatchedPairs.mEtaMc"][iTrack];}
-  float GetMatchedMcPhi(int iTrack){ return track_float_map_["mMatchedPairs.mPhiMc"][iTrack];}
+  float GetMcPt(int i){return mMcPt[i];}
+  float GetMcPz(int i){return mMcPz[i];}
+  float GetMcEta(int i){return mMcEta[i];}
+  float GetMcPhi(int i){return mMcPhi[i];}
+  short GetMcNHit(int i){return mMcNHit[i];}
 
-  int GetMatchedMcNHit(int iTrack){ return track_int_map_["mMatchedPairs.mNHitMc"][iTrack];}
-  int GetMatchedGeantId(int iTrack){ return track_int_map_["mMatchedPairs.mGeantId"][iTrack];}
-  int GetMatchedPdgId(int iTrack){ return track_int_map_["mMatchedPairs.mPdgId"][iTrack];}
-  int GetMatchedMcCharge(int iTrack){ return track_int_map_["mMatchedPairs.mChargeMc"][iTrack];}
-  int GetMatchedParentGeantId(int iTrack){ return track_int_map_["mMatchedPairs.mParentGeantId"][iTrack];}
-  int GetMatchedIsPrimary(int iTrack){ return track_int_map_["mMatchedPairs.mIsPrimary"][iTrack];}
-  int GetMatchedIsDca(int iTrack){ return track_int_map_["mMatchedPairs.mIsDca"][iTrack];}
-  
-  float GetMatchedPt(int iTrack){ return track_float_map_["mMatchedPairs.mPtPr"][iTrack];}
-  float GetMatchedPz(int iTrack){ return track_float_map_["mMatchedPairs.mPzPr"][iTrack];}
-  float GetMatchedEta(int iTrack){ return track_float_map_["mMatchedPairs.mEtaPr"][iTrack];}
-  float GetMatchedPhi(int iTrack){ return track_float_map_["mMatchedPairs.mPhiPr"][iTrack];}
-  float GetMatchedDca(int iTrack){ return track_float_map_["mMatchedPairs.mDcaPr"][iTrack];}
-  float GetMatchedDcaXY(int iTrack){ return track_float_map_["mMatchedPairs.mDcaXYPr"][iTrack];}
-  float GetMatchedDcaZ(int iTrack){ return track_float_map_["mMatchedPairs.mDcaZPr"][iTrack];}
+  unsigned short GetMcGeantId(int i){return mMcGeantId[i];}
+  short GetMcCharge(int i){return mMcCharge[i];}
+  unsigned short GetMcParentGeantId(int i){return mMcParentGeantId[i];}
+
+  float GetMatchedPt(int i){return mMatchedPt[i];}
+  float GetMatchedPz(int i){return mMatchedPz[i];}
+  float GetMatchedEta(int i){return mMatchedEta[i];}
+  float GetMatchedPhi(int i){return mMatchedPhi[i];}
+  short GetMatchedNHit(int i){return mMatchedNHit[i];}
+  short GetMatchedNPoss(int i){return mMatchedNPoss[i];}
+
+  unsigned short GetMatchedGeantId(int i){return mMatchedGeantId[i];}
+  short GetMatchedCharge(int i){return mMatchedCharge[i];}
+  unsigned short GetMatchedParentGeantId(int i){return mMatchedParentGeantId[i];}
+
+  float GetMatchedPtPr(int i){return mMatchedPtPr[i];}
+  float GetMatchedPzPr(int i){return mMatchedPzPr[i];}
+  float GetMatchedEtaPr(int i){return mMatchedEtaPr[i];}
+  float GetMatchedPhiPr(int i){return mMatchedPhiPr[i];}
+  float GetMatchedDcaPr(int i){return mMatchedDcaPr[i];}
+  float GetMatchedDcaXYPr(int i){return mMatchedDcaXYPr[i];}
+  float GetMatchedDcaZPr(int i){return mMatchedDcaZPr[i];}
 
   ClassDef( MiniMcReader, 1);
   

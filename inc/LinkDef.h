@@ -1,5 +1,5 @@
-//#ifdef __CINT__
-#ifdef __CLANG__
+#ifdef __CINT__
+//#ifdef __CLANG__
 
 #pragma link off all class;
 #pragma link off all function;
@@ -10,5 +10,8 @@
 //#pragma link C++ class MiniMcReader+;
 
 #pragma link C++ defined_in "minimc_reader.h";
+#pragma link C++ defined_in "process_embedding.h";
+#pragma link C++ defined_in "run_embed.h";
+
 
 #endif

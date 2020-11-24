@@ -14,7 +14,7 @@ ROOT_LIBS = $(shell root-config --libs)
 
 # all source code to be compiled .cxx .h
 
-CLASSES = minimc_reader
+CLASSES = minimc_reader process_embedding run_embed
 
 DIR_H = $(addprefix ${INC}/,${CLASSES})
 H_FILES = $(addsuffix .h,${DIR_H})
