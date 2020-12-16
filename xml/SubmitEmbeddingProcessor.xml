@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+ <job maxFilesPerProcess="1" simulateSubmission="false">
+  <stdout URL="file:&logDir;/EMBED_$JOBINDEX.out" />
+  <stderr URL="file:&logDir;/EMBED_$JOBINDEX.err" /> 
+  
+  <Generator><Location>&schedDir;
+  </Location></Generator>
+    
+  <input URL="filelist:&filelist;"/> 
+    
+  <SandBox installer="ZIP">
+   <Package name="sched_&packageName;">
+    <File>file:&workDir;/lib/embeddingCode.so</File>
+    <File>file:&workDir;/macros/RunEmbeddingCondor.C</File>
+   </Package>
+  </SandBox> 
+
+    <command>
+    
+    stardev
+    setup 64bits    
+
+    root -b -l -q RunEmbeddingCondor.C\(\"$FILELIST\",\"$JOBID\"\) 
+
+    </command>
+    
+    <output fromScratch="*.root" toURL="file:&outDir;"/>
+ </job> 

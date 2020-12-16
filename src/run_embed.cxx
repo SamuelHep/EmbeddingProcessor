@@ -3,8 +3,11 @@
 #include "TFile.h"
 #include "TString.h"
 #include "TH3D.h"
+#include <iostream>
 
-int RunEmbedding(TString file_list,TString outfilename)
+using namespace std;
+
+int RunEmbedding(TString file_list,TString jobid)
 {
   
   MiniMcReader * mc_reader = new MiniMcReader( file_list );
@@ -23,6 +26,8 @@ int RunEmbedding(TString file_list,TString outfilename)
   TH2D * matched_hist = embed_proc->GetMatchedHistogram();
   TH2D * mc_hist      = embed_proc->GetMCHistogram();
 
+  TString outfilename = TString::Format("embed_%s.root",jobid.Data());
+  cout << "Outfile = " << outfilename << endl;
   TFile * outfile = new TFile( outfilename , "RECREATE" );
   matched_hist->Write();
   mc_hist->Write();
