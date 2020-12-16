@@ -4,19 +4,19 @@
 #include "TString.h"
 #include "TH3D.h"
 
-int RunEmbedding(TString file_list,TString outfilename)
+int RunEmbedding(TString file_list,TString outfilename, int nhitsfit, double dca)
 {
   
   MiniMcReader * mc_reader = new MiniMcReader( file_list );
   EmbeddingProcessor * embed_proc = new EmbeddingProcessor( mc_reader );
 
   //Set FxtMult3 conditions
-  embed_proc->SetFxt3_NHitsFit( 10 );
+  embed_proc->SetFxt3_NHitsFit( 10.0 );
   embed_proc->SetFxt3_Dca( 3.0 );
   
   //Set Analysis Proton conditions
-  embed_proc->SetNHitsFit( 10 );
-  embed_proc->SetDca( 3.0 );
+  embed_proc->SetNHitsFit( nhitsfit );
+  embed_proc->SetDca( dca );
 
   embed_proc->Run();
 
