@@ -15,7 +15,7 @@ EmbeddingProcessor::EmbeddingProcessor(MiniMcReader * minimc_reader)
   minimc_reader_  = minimc_reader;
   //  matched_hist_   = new TH3D("efficiency_hist","",120,-0.5,119.5,100,0,2,110,0,2.2); // Mult, y, pt
   //  mc_hist_        = new TH3D("mc_hist","",120,-0.5,119.5,100,0,2,110,0,2.2); // Mult, y, pt
-  matched_hist_   = new TH2D("efficiency_hist","",100,0,2,110,0,2.2); // Mult, y, pt
+  matched_hist_   = new TH2D("rc_hist","",100,0,2,110,0,2.2); // Mult, y, pt
   mc_hist_        = new TH2D("mc_hist","",100,0,2,110,0,2.2); // Mult, y, pt
 
   vertexR_min_max_ = make_pair<double,double>(0,3);
